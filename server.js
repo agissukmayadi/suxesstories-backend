@@ -238,7 +238,7 @@ app.post("/api/assign-survey", async (req, res) => {
 
     // Assign token untuk setiap survei
     const tokens = await assignSurveys(sessionKey, surveys, participant);
-
+    console.log(tokens);
     // Buat daftar tautan survei
     let surveyLinks = "";
     surveys.forEach((survey) => {
@@ -266,7 +266,9 @@ app.post("/api/assign-survey", async (req, res) => {
     };
     await transporter.sendMail(mailOptions);
 
-    res.status(200).json({ message: "Participant assigned and email sent." });
+    res
+      .status(200)
+      .json({ message: "Participant assigned and email sent.", tokens });
   } catch (error) {
     console.error("Error assigning surveys:", error);
     res
