@@ -27,11 +27,15 @@ const snap = new midtransClient.Snap({
 
 // Nodemailer Configuration
 const transporter = nodemailer.createTransport({
-  service: "gmail", // Sesuaikan dengan layanan email Anda (e.g., Gmail, Outlook)
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    user: "agissukmayadi009@gmail.com", // Ganti dengan email pengirim Anda
-    pass: "zzln txdx vvdh kkdn", // Ganti dengan password atau App Password Anda
+    user: "no-reply@suxesstories.com",
+    pass: "Terbang9898!?#",
   },
+  logger: true, // Log aktivitas
+  debug: true,  // Aktifkan debug mode
 });
 
 const app = express();
@@ -72,7 +76,7 @@ async function getSessionKey() {
 
 // Fungsi untuk melepaskan session key dari LimeSurvey
 async function releaseSessionKey(sessionKey) {
-  await axios.post(`${limeSurveyConfig.baseURL}/admin/remotecontrol`, {
+  await axios.post(`${limeSurveyConfig.baseURL}/admin/relIxzAEvIBPRgtaFmotecontrol`, {
     method: "release_session_key",
     params: [sessionKey],
     id: 3,
@@ -280,6 +284,53 @@ app.post("/api/assign-survey", async (req, res) => {
     }
   }
 });
+
+// app.post("/api/get-survey-results", async (req, res) => {
+//   const { surveyId, format, token } = req.body; // Dapatkan surveyId dan token dari request frontend
+//   let sessionKey;
+
+//   try {
+//     // 1. Dapatkan session key
+//     sessionKey = await getSessionKey();
+
+//     // 2. Ekspor hasil survei menggunakan LimeSurvey API
+//     const response = await axios.post(
+//       `${limeSurveyConfig.baseURL}/admin/remotecontrol`,
+//       {
+//         method: "export_responses",
+//         params: [
+//           sessionKey,
+//           surveyId,
+//           format || "pdf", // Format file: pdf, csv, atau excel
+//           { token: token, completionstate: "complete" }, // Filter berdasarkan token
+//         ],
+//         id: 5,
+//       }
+//     );
+
+//     const fileData = response.data.result; // Data hasil survei yang sudah diekspor dalam bentuk base64
+//     if (!fileData) throw new Error("Gagal mendapatkan hasil survei.");
+
+//     // 3. Kirim file sebagai respons
+//     const buffer = Buffer.from(fileData, "base64"); // Konversi base64 ke binary
+//     const fileName = `survey_result_${surveyId}.pdf`; // Nama file yang dikirim
+
+//     res.set({
+//       "Content-Type": "application/pdf",
+//       "Content-Disposition": `attachment; filename=${fileName}`,
+//       "Content-Length": buffer.length,
+//     });
+//     res.send(buffer);
+//   } catch (error) {
+//     console.error("Error fetching survey results:", error);
+//     res.status(500).json({ message: "Gagal mendapatkan hasil survei." });
+//   } finally {
+//     if (sessionKey) {
+//       await releaseSessionKey(sessionKey);
+//     }
+//   }
+// });
+
 
 // Jalankan server
 const PORT = 5000;
