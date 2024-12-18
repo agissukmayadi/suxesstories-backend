@@ -76,7 +76,7 @@ async function getSessionKey() {
 
 // Fungsi untuk melepaskan session key dari LimeSurvey
 async function releaseSessionKey(sessionKey) {
-  await axios.post(`${limeSurveyConfig.baseURL}/admin/relIxzAEvIBPRgtaFmotecontrol`, {
+  await axios.post(`${limeSurveyConfig.baseURL}/admin/remotecontrol`, {
     method: "release_session_key",
     params: [sessionKey],
     id: 3,
